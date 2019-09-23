@@ -1,7 +1,10 @@
 package sample;
 
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -10,8 +13,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Random;
 
@@ -43,32 +48,62 @@ public class Main extends Application {
                 "    -fx-background-color: #E8E8E8;");
 
         gp.setStyle("-fx-padding: 8 15 15 15");
-        gp.setVgap(5);
-        gp.setHgap(5);
+        gp.setVgap(2.5);
+        gp.setHgap(2.5);
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
-                int n = rand.nextInt(4);
                 Rectangle rec =  new Rectangle();
                 rec.setWidth(30);
                 rec.setHeight(30);
-                rec.setFill(colors[n]);
+                rec.setFill(Color.valueOf("beige"));
+
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
                 gp.getChildren().addAll(rec);
             }
         }
+//        gp.setGridLinesVisible(true);
+        Circle circle =new Circle();
+        circle.setFill(Color.valueOf("Red"));
+        circle.setRadius(8);
+        circle.setUserData("Player");
+        GridPane.setRowIndex(circle,0);
+        GridPane.setColumnIndex(circle,0);
+        gp.getChildren().add(circle);
+
+
 
         vbox.getChildren().add(gp);
         root.setLeft(vbox);
-
-
         primaryStage.setTitle("Wumpus World!");
         primaryStage.setScene(new Scene(root, 600, 500));
         primaryStage.show();
+
+        Node player = getByUserData(gp,"Player");
+        TranslateTransition tt = new TranslateTransition(Duration.millis(2000), circle);
+        tt.setByX(40);
+
+       // tt.setCycleCount(Animation.INDEFINITE);//set to 1
+
+        tt.play();
+
+
     }
+
 
 
     public static void main(String[] args) {
         launch(args);
+    }
+    private Node getByUserData(Parent parent,Object data) {
+
+        for (Node n : parent.getChildrenUnmodifiable()) {
+            if (data.equals(n.getUserData())) {
+                return n;
+            }
+            else return null;
+
+        }
+        return  null;
     }
 }

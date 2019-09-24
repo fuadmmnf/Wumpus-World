@@ -53,8 +53,8 @@ public class Main extends Application {
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 Rectangle rec =  new Rectangle();
-                rec.setWidth(30);
-                rec.setHeight(30);
+                rec.setWidth(50);
+                rec.setHeight(50);
                 rec.setFill(Color.valueOf("beige"));
 
                 GridPane.setRowIndex(rec, row);
@@ -76,17 +76,20 @@ public class Main extends Application {
         vbox.getChildren().add(gp);
         root.setLeft(vbox);
         primaryStage.setTitle("Wumpus World!");
-        primaryStage.setScene(new Scene(root, 600, 500));
+        primaryStage.setScene(new Scene(root, 750, 630));
+        primaryStage.setMinHeight(500);
+        primaryStage.setMinWidth(700);
         primaryStage.show();
 
         Node player = getByUserData(gp,"Player");
-        TranslateTransition tt = new TranslateTransition(Duration.millis(2000), circle);
-        tt.setByX(40);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
+        tt.setByX(80);
+
 
        // tt.setCycleCount(Animation.INDEFINITE);//set to 1
 
         tt.play();
-
+        tt = new TranslateTransition(Duration.millis(500), circle);
 
     }
 

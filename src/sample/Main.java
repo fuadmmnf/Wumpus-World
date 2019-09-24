@@ -11,10 +11,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -50,16 +52,23 @@ public class Main extends Application {
         gp.setStyle("-fx-padding: 8 15 15 15");
         gp.setVgap(2.5);
         gp.setHgap(2.5);
+        
+        WmpsWorld myWorld = new WmpsWorld();
+		String world[][]= myWorld.generateWorld();
+		String list[] = {"Normal", "Wumpus", "Stench", "Pit", "Breeze", "Gold"};
+        
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 Rectangle rec =  new Rectangle();
                 rec.setWidth(50);
                 rec.setHeight(50);
                 rec.setFill(Color.valueOf("beige"));
-
+                Text text = new Text(world[row][col]);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
-                gp.getChildren().addAll(rec);
+                GridPane.setRowIndex(text, row);
+                GridPane.setColumnIndex(text, col);
+                gp.getChildren().addAll(rec,text);
             }
         }
 //        gp.setGridLinesVisible(true);

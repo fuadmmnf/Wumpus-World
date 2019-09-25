@@ -4,6 +4,7 @@
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/logicng/logicng/1.6.1/logicng-1.6.1.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.7.1/antlr4-runtime-4.7.1.jar!/" />
+      <root url="jar://E:/AI/jar_files/controlsfx-8.40.11.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

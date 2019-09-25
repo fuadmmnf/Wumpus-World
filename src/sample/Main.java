@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.control.ToggleSwitch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,22 @@ public class Main extends Application {
         BorderPane bpane = new BorderPane();
         Label gameName = new Label("Wumpus World!");
         gameName.setTextFill(Color.valueOf("white"));
+
+        ToggleSwitch tg = new ToggleSwitch();
+        Label start = new Label("Start");
+        start.setTextFill(Color.WHITE);
+        GridPane topgp =new GridPane();
+        GridPane.setRowIndex(start,0);
+        GridPane.setRowIndex(tg,0);
+        GridPane.setColumnIndex(start,0);
+        GridPane.setColumnIndex(tg,1);
+        topgp.setStyle("-fx-padding: 8 15 15 15;-fx-font-size:15px;");
+        topgp.setVgap(2);
+        topgp.setHgap(2);
+
+        topgp.getChildren().addAll(start,tg);
+        bpane.setRight(topgp);
+        
         bpane.setLeft(gameName);
         bpane.setStyle("-fx-background-color:darkslateblue;-fx-padding: 10px;\n" +
                 "    -fx-font-size: 20px;-fx-color:white");

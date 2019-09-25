@@ -14,7 +14,7 @@ public class WmpsWorld {
 	private int[][] world = new int[10][10];
 	private String[][] mainWorld=new String[10][10];
 	private Random rand = new Random();
-	private String list[] = {"", "W", "S", "P", "B", "G"};
+	private String list[] = {"", "W", "S", "P", "B", "G","Gl"};
 	
 	public WmpsWorld() {
 		
@@ -45,6 +45,8 @@ public class WmpsWorld {
 		world[i][j]=5;
 		mainWorld[i][j] = list[5];
 		
+		setSurroundings(i,j,6);
+		
 	}
 
 
@@ -60,7 +62,7 @@ public class WmpsWorld {
 		}
 		else {
 			world[i][j]=1;
-			mainWorld[i][j]=mainWorld[i][j]+"+"+list[1];
+			mainWorld[i][j]=mainWorld[i][j]+" "+list[1];
 		}
 		
 		
@@ -98,7 +100,7 @@ public class WmpsWorld {
 			}
 			else {
 				world[i][j-1]=k;
-				mainWorld[i][j-1]=mainWorld[i][j-1]+"+"+list[k];
+				mainWorld[i][j-1]=mainWorld[i][j-1]+" "+list[k];
 			}
 			
 		}	
@@ -111,7 +113,7 @@ public class WmpsWorld {
 			}
 			else {
 				world[i][j+1]=k;
-				mainWorld[i][j+1]=mainWorld[i][j+1]+"+"+list[k];
+				mainWorld[i][j+1]=mainWorld[i][j+1]+" "+list[k];
 			}
 		}
 			
@@ -123,7 +125,7 @@ public class WmpsWorld {
 			}
 			else {
 				world[i-1][j]=k;
-				mainWorld[i-1][j]=mainWorld[i-1][j]+"+"+list[k];
+				mainWorld[i-1][j]=mainWorld[i-1][j]+" "+list[k];
 			}
 		}
 			
@@ -135,7 +137,7 @@ public class WmpsWorld {
 			}
 			else {
 				world[i+1][j]=k;
-				mainWorld[i+1][j]=mainWorld[i+1][j]+"+"+list[k];
+				mainWorld[i+1][j]=mainWorld[i+1][j]+" "+list[k];
 			}
 		}
 			

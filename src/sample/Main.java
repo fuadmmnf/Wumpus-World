@@ -20,6 +20,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Main extends Application {
@@ -54,16 +56,37 @@ public class Main extends Application {
         gp.setHgap(2.5);
         
         WmpsWorld myWorld = new WmpsWorld();
-		String world[][]= myWorld.generateWorld();
-		String list[] = {"Normal", "Wumpus", "Stench", "Pit", "Breeze", "Gold"};
-        
+		String world[][]= myWorld.generateWorld(); 
+		Map< String,Integer> list = new HashMap< String,Integer>(); 
+		list.put("",0);
+		list.put("W",1);
+		list.put("S",2);
+		list.put("P",3);
+		list.put("B",4);
+		list.put("G",5);
+		list.put("Gl",6);
+		
+		
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
+            	
+            	boolean[] status= {false, false, false,false, false, false,false};
+            	
                 Rectangle rec =  new Rectangle();
                 rec.setWidth(50);
                 rec.setHeight(50);
                 rec.setFill(Color.valueOf("beige"));
-                Text text = new Text(world[row][col]);
+                String[] input = world[row][col].split(" ");
+                String output="";
+                
+                for(int i=0; i<input.length; i++) {
+                	if(status[list.get(input[i])]==false) {
+                		output=output+" "+input[i];
+                		status[list.get(input[i])]=true;
+                	}
+                }
+                
+                Text text = new Text(output);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
                 GridPane.setRowIndex(text, row);
@@ -76,8 +99,8 @@ public class Main extends Application {
         circle.setFill(Color.valueOf("Red"));
         circle.setRadius(8);
         circle.setUserData("Player");
-        GridPane.setRowIndex(circle,0);
-        GridPane.setColumnIndex(circle,0);
+        GridPane.setRowIndex(circle,4);
+        GridPane.setColumnIndex(circle,4);
         gp.getChildren().add(circle);
 
 

@@ -102,7 +102,7 @@ public class Main extends Application {
                 rec.setFill(Color.valueOf("beige"));
                 String[] input = world[row][col].split(" ");
                 String output="";
-                
+
                 for(int i=0; i<input.length; i++) {
                 	if(status[list.get(input[i])]==false) {
                 		output=output+" "+input[i];
@@ -127,27 +127,24 @@ public class Main extends Application {
             }
         }
         System.out.println(Arrays.deepToString(listOfStuff));
-        System.out.println(listOfStuff);
+
 //        gp.setGridLinesVisible(true);
-        Circle circle =new Circle();
-        circle.setFill(Color.valueOf("Red"));
-        circle.setRadius(8);
-        circle.setUserData("Player");
-        GridPane.setRowIndex(circle,0);
-        GridPane.setColumnIndex(circle,0);
-        gp.getChildren().add(circle);
+
+//        circle.setUserData("Player");
 
         startBtn.setOnAction(actionEvent ->  {
 
             for (int i =0;i<10;i++)
             {
-               for (int j= 0;j<10;j++ )
-               {
+                for (int j=0;j<10;j++)
+                {
+                    Circle circle =new Circle();
+                    circle.setFill(Color.valueOf("Red"));
+                    circle.setRadius(8);
 
-                   GridPane.setRowIndex(circle,i);
-                   GridPane.setColumnIndex(circle,j);
-                   circle.setVisible(true);
-               }
+                    gp.add(circle,i,j);
+
+                }
             }
         });
 

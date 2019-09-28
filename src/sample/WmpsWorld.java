@@ -15,7 +15,9 @@ public class WmpsWorld {
 	private String[][] mainWorld=new String[10][10];
 	private Random rand = new Random();
 	private String list[] = {"", "W", "S", "P", "B", "G","Gl"};
-	
+	public int[][] getWorld(){
+		return world;
+	}
 	public WmpsWorld() {
 		
 		for(int i=0;i<10;i++)

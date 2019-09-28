@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -41,21 +43,24 @@ public class Main extends Application {
         Label gameName = new Label("Wumpus World!");
         gameName.setTextFill(Color.valueOf("white"));
 
-        ToggleSwitch tg = new ToggleSwitch();
-        Label start = new Label("Start");
-        start.setTextFill(Color.WHITE);
-        GridPane topgp =new GridPane();
-        GridPane.setRowIndex(start,0);
-        GridPane.setRowIndex(tg,0);
-        GridPane.setColumnIndex(start,0);
-        GridPane.setColumnIndex(tg,1);
-        topgp.setStyle("-fx-padding: 8 15 15 15;-fx-font-size:15px;");
-        topgp.setVgap(2);
-        topgp.setHgap(2);
+//        ToggleSwitch tg = new ToggleSwitch();
+//        Label start = new Label("Start");
+//        start.setTextFill(Color.WHITE);
+//        GridPane topgp =new GridPane();
+//        GridPane.setRowIndex(start,0);
+//        GridPane.setRowIndex(tg,0);
+//        GridPane.setColumnIndex(start,0);
+//        GridPane.setColumnIndex(tg,1);
+//        topgp.setStyle("-fx-padding: 8 15 15 15;-fx-font-size:15px;");
+//        topgp.setVgap(2);
+//        topgp.setHgap(2);
+//
+//        topgp.getChildren().addAll(start,tg);
+//        bpane.setRight(topgp);
+        Button startBtn = new Button("Start");
+        bpane.setRight(startBtn);
 
-        topgp.getChildren().addAll(start,tg);
-        bpane.setRight(topgp);
-        
+
         bpane.setLeft(gameName);
         bpane.setStyle("-fx-background-color:darkslateblue;-fx-padding: 10px;\n" +
                 "    -fx-font-size: 20px;-fx-color:white");
@@ -73,7 +78,7 @@ public class Main extends Application {
         gp.setHgap(2.5);
         
         WmpsWorld myWorld = new WmpsWorld();
-		String world[][]= myWorld.generateWorld(); 
+		String world[][]= myWorld.generateWorld();
 		Map< String,Integer> list = new HashMap< String,Integer>(); 
 		list.put("",0);
 		list.put("W",1);
@@ -82,7 +87,9 @@ public class Main extends Application {
 		list.put("B",4);
 		list.put("G",5);
 		list.put("Gl",6);
-		
+
+
+		int[][] listOfStuff = new int[10][10];
 		
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
@@ -108,18 +115,41 @@ public class Main extends Application {
                 GridPane.setColumnIndex(rec, col);
                 GridPane.setRowIndex(text, row);
                 GridPane.setColumnIndex(text, col);
+                text.setVisible(true);
+
+                if (text.getText().equals(" "))
+                {
+                    listOfStuff[row][col]=1;
+                }
+                else listOfStuff[row][col]=2;
+                text.setVisible(false);
                 gp.getChildren().addAll(rec,text);
             }
         }
+        System.out.println(Arrays.deepToString(listOfStuff));
+        System.out.println(listOfStuff);
 //        gp.setGridLinesVisible(true);
         Circle circle =new Circle();
         circle.setFill(Color.valueOf("Red"));
         circle.setRadius(8);
         circle.setUserData("Player");
-        GridPane.setRowIndex(circle,4);
-        GridPane.setColumnIndex(circle,4);
+        GridPane.setRowIndex(circle,0);
+        GridPane.setColumnIndex(circle,0);
         gp.getChildren().add(circle);
 
+        startBtn.setOnAction(actionEvent ->  {
+
+            for (int i =0;i<10;i++)
+            {
+               for (int j= 0;j<10;j++ )
+               {
+
+                   GridPane.setRowIndex(circle,i);
+                   GridPane.setColumnIndex(circle,j);
+                   circle.setVisible(true);
+               }
+            }
+        });
 
 
         vbox.getChildren().add(gp);
@@ -130,15 +160,15 @@ public class Main extends Application {
         primaryStage.setMinWidth(700);
         primaryStage.show();
 
-        Node player = getByUserData(gp,"Player");
-        TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
-        tt.setByX(80);
-
-
-       // tt.setCycleCount(Animation.INDEFINITE);//set to 1
-
-        tt.play();
-        tt = new TranslateTransition(Duration.millis(500), circle);
+//        Node player = getByUserData(gp,"Player");
+//        TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
+//        tt.setByX(80);
+//
+//
+//       // tt.setCycleCount(Animation.INDEFINITE);//set to 1
+//
+//        tt.play();
+//        tt = new TranslateTransition(Duration.millis(500), circle);
 
     }
 

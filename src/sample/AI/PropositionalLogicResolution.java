@@ -8,9 +8,9 @@ public class PropositionalLogicResolution {
 
     public boolean getResolutionResult(String entailQuery){
 
-        List<String> knowledgeBaseSentences = KnowledgeBaseSingleton.getInstance().getKnowledgeBaseSentences();
+        List<String> knowledgeBaseSentences = new ArrayList<>(KnowledgeBaseSingleton.getInstance().getKnowledgeBaseSentences());
         knowledgeBaseSentences.add("~"+ entailQuery);
-        for(int it=0; it<6; it++) {
+        for(int it=0; it<4; it++) {
             int prevIterSentenceSize = knowledgeBaseSentences.size();
             List<Integer> joinedIndices = new ArrayList<>();
 

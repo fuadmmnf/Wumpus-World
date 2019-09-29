@@ -7,27 +7,33 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.control.ToggleSwitch;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         Random rand = new Random();
         Color[] colors = {Color.BLACK, Color.BLUE, Color.GREEN, Color.RED};
-
 
 
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -35,6 +41,25 @@ public class Main extends Application {
         BorderPane bpane = new BorderPane();
         Label gameName = new Label("Wumpus World!");
         gameName.setTextFill(Color.valueOf("white"));
+
+//        ToggleSwitch tg = new ToggleSwitch();
+//        Label start = new Label("Start");
+//        start.setTextFill(Color.WHITE);
+//        GridPane topgp =new GridPane();
+//        GridPane.setRowIndex(start,0);
+//        GridPane.setRowIndex(tg,0);
+//        GridPane.setColumnIndex(start,0);
+//        GridPane.setColumnIndex(tg,1);
+//        topgp.setStyle("-fx-padding: 8 15 15 15;-fx-font-size:15px;");
+//        topgp.setVgap(2);
+//        topgp.setHgap(2);
+//
+//        topgp.getChildren().addAll(start,tg);
+//        bpane.setRight(topgp);
+        Button startBtn = new Button("Start");
+        bpane.setRight(startBtn);
+
+
         bpane.setLeft(gameName);
         bpane.setStyle("-fx-background-color:darkslateblue;-fx-padding: 10px;\n" +
                 "    -fx-font-size: 20px;-fx-color:white");
@@ -50,19 +75,73 @@ public class Main extends Application {
         gp.setStyle("-fx-padding: 8 15 15 15");
         gp.setVgap(2.5);
         gp.setHgap(2.5);
+
+        WmpsWorld myWorld = new WmpsWorld();
+        String world[][] = myWorld.generateWorld();
+        Map<String, Integer> list = new HashMap<String, Integer>();
+        list.put("", 0);
+        list.put("W", 1);
+        list.put("S", 2);
+        list.put("P", 3);
+        list.put("B", 4);
+        list.put("G", 5);
+        list.put("Gl", 6);
+
+
+        int[][] listOfStuff = new int[10][10];
+
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
-                Rectangle rec =  new Rectangle();
+
+                boolean[] status = {false, false, false, false, false, false, false};
+
+                Rectangle rec = new Rectangle();
                 rec.setWidth(50);
                 rec.setHeight(50);
                 rec.setFill(Color.valueOf("beige"));
+                String[] input = world[row][col].split(" ");
+                String output = "";
 
+                for (int i = 0; i < input.length; i++) {
+                    if (status[list.get(input[i])] == false) {
+                        output = output + " " + input[i];
+                        status[list.get(input[i])] = true;
+                    }
+                }
+
+                Text text = new Text(output);
                 GridPane.setRowIndex(rec, row);
                 GridPane.setColumnIndex(rec, col);
-                gp.getChildren().addAll(rec);
+                GridPane.setRowIndex(text, row);
+                GridPane.setColumnIndex(text, col);
+                text.setVisible(true);
+
+//                Circle circle = null;
+//
+//                circle = new Circle();
+//                if (row == 0 && col == 0)
+//                    circle.setFill(Color.valueOf("Red"));
+//                else
+//                    circle.setFill(Color.valueOf("Beige"));
+//
+//                circle.setRadius(8);
+//                GridPane.setRowIndex(circle, row);
+//                GridPane.setColumnIndex(circle, col);
+
+
+                if (text.getText().equals(" ")) {
+                    listOfStuff[row][col] = 1;
+                } else listOfStuff[row][col] = 2;
+//                text.setVisible(false);
+//                gp.getChildren().addAll(rec, text, circle);
+                gp.getChildren().addAll(rec, text);
             }
         }
+        System.out.println(Arrays.deepToString(listOfStuff));
+
 //        gp.setGridLinesVisible(true);
+
+//        circle.setUserData("Player");
         Circle circle =new Circle();
         circle.setFill(Color.valueOf("Red"));
         circle.setRadius(8);
@@ -70,8 +149,6 @@ public class Main extends Application {
         GridPane.setRowIndex(circle,0);
         GridPane.setColumnIndex(circle,0);
         gp.getChildren().add(circle);
-
-
 
         vbox.getChildren().add(gp);
         root.setLeft(vbox);
@@ -81,32 +158,36 @@ public class Main extends Application {
         primaryStage.setMinWidth(700);
         primaryStage.show();
 
-        Node player = getByUserData(gp,"Player");
+
+
+        Node player = getByUserData(gp, "Player");
         TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
         tt.setByX(80);
 
 
-       // tt.setCycleCount(Animation.INDEFINITE);//set to 1
+        // tt.setCycleCount(Animation.INDEFINITE);//set to 1
+
 
         tt.play();
-        tt = new TranslateTransition(Duration.millis(500), circle);
+
 
     }
-
 
 
     public static void main(String[] args) {
         launch(args);
     }
-    private Node getByUserData(Parent parent,Object data) {
+
+    private Node getByUserData(Parent parent, Object data) {
 
         for (Node n : parent.getChildrenUnmodifiable()) {
             if (data.equals(n.getUserData())) {
                 return n;
-            }
-            else return null;
+            } else return null;
 
         }
-        return  null;
+        return null;
     }
 }
+
+

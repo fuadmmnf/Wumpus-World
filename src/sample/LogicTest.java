@@ -14,7 +14,7 @@ public class LogicTest {
         PropositionalParser p = new PropositionalParser(f);
         Formula formula = null;
         try{
-            formula= p.parse("A => B");
+            formula= p.parse("P22 => (B21 | B12 | B32 | B23)");
             final Formula cnf = formula.cnf();
 
             System.out.println(cnf.toString());

@@ -42,8 +42,8 @@ public class WmpsWorld {
 	private void setGold() {
 		// TODO Auto-generated method stub
 		
-		int i =rand.nextInt(10);
-		int j =rand.nextInt(10);
+		int i =rand.nextInt(9)+1;
+		int j =rand.nextInt(9)+1;
 		world[i][j]=5;
 		mainWorld[i][j] = list[5];
 		
@@ -55,8 +55,8 @@ public class WmpsWorld {
 
 	private void setWumpus() {
 		// TODO Auto-generated method stub
-		int i =rand.nextInt(10);
-		int j =rand.nextInt(10);
+		int i =rand.nextInt(9)+1;
+		int j =rand.nextInt(9)+1;
 		
 		if(world[i][j]==-1) {
 			world[i][j]=1;
@@ -75,11 +75,11 @@ public class WmpsWorld {
 	private void setPit() {
 		// TODO Auto-generated method stub
 		
-		int pit = rand.nextInt(4)+4;
+		int pit = rand.nextInt(5)+5;
 		
 		for(int loop=1;loop<=pit;loop++) {
-			int i =rand.nextInt(10);
-			int j =rand.nextInt(10);
+			int i =rand.nextInt(9)+1;
+			int j =rand.nextInt(9)+1;
 			
 			if(world[i][j]!=1 && world[i][j]!=5 && world[i][j]!=3) {
 				world[i][j]=3;

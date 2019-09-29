@@ -21,20 +21,23 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.ToggleSwitch;
+import sample.utils.AgentPercept;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Main extends Application {
+
+    AgentPercept agentPercept = new AgentPercept();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         Random rand = new Random();
         Color[] colors = {Color.BLACK, Color.BLUE, Color.GREEN, Color.RED};
-
 
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         BorderPane root = new BorderPane();
@@ -132,7 +135,7 @@ public class Main extends Application {
                 if (text.getText().equals(" ")) {
                     listOfStuff[row][col] = 1;
                 } else listOfStuff[row][col] = 2;
-//                text.setVisible(false);
+                text.setVisible(false);
 //                gp.getChildren().addAll(rec, text, circle);
                 gp.getChildren().addAll(rec, text);
             }
@@ -146,8 +149,8 @@ public class Main extends Application {
         circle.setFill(Color.valueOf("Red"));
         circle.setRadius(8);
         circle.setUserData("Player");
-        GridPane.setRowIndex(circle,0);
-        GridPane.setColumnIndex(circle,0);
+        GridPane.setRowIndex(circle,agentPercept.getCurrX());
+        GridPane.setColumnIndex(circle,agentPercept.getCurrY());
         gp.getChildren().add(circle);
 
         vbox.getChildren().add(gp);
@@ -159,20 +162,23 @@ public class Main extends Application {
         primaryStage.show();
 
 
-
-        Node player = getByUserData(gp, "Player");
-        TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
-        tt.setByX(80);
-
-
-        // tt.setCycleCount(Animation.INDEFINITE);//set to 1
-
-
-        tt.play();
-
+        movePlayer(gp, circle);
 
     }
 
+    public void movePlayer(GridPane gp, Circle circle){
+        Node player = getByUserData(gp, "Player");
+        TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
+        tt.setByY(80);
+
+        tt.play();
+
+        agentPercept.setCurrX(1);
+        agentPercept.setCurrY(0);
+
+        GridPane.setRowIndex(circle,agentPercept.getCurrX());
+        GridPane.setColumnIndex(circle,agentPercept.getCurrY());
+    }
 
     public static void main(String[] args) {
         launch(args);

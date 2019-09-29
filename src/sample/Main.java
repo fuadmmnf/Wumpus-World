@@ -1,9 +1,14 @@
 package sample;
 
 import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,6 +37,9 @@ import java.util.stream.IntStream;
 public class Main extends Application {
 
     AgentPercept agentPercept = new AgentPercept();
+    GridPane gp = new GridPane();
+    String worldEnv[][];
+    Circle circle =new Circle();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -69,7 +77,7 @@ public class Main extends Application {
         root.setTop(bpane);
 
         VBox vbox = new VBox();
-        GridPane gp = new GridPane();
+
         vbox.setStyle("-fx-padding: 8 15 15 15;\n" +
                 "    -fx-border-width: 1;\n" +
                 "    -fx-border-color: transparent #E8E8E8 transparent transparent;\n" +
@@ -80,7 +88,7 @@ public class Main extends Application {
         gp.setHgap(2.5);
 
         WmpsWorld myWorld = new WmpsWorld();
-        String world[][] = myWorld.generateWorld();
+        worldEnv = myWorld.generateWorld();
         Map<String, Integer> list = new HashMap<String, Integer>();
         list.put("", 0);
         list.put("W", 1);
@@ -102,7 +110,7 @@ public class Main extends Application {
                 rec.setWidth(50);
                 rec.setHeight(50);
                 rec.setFill(Color.valueOf("beige"));
-                String[] input = world[row][col].split(" ");
+                String[] input = worldEnv[row][col].split(" ");
                 String output = "";
 
                 for (int i = 0; i < input.length; i++) {
@@ -119,23 +127,13 @@ public class Main extends Application {
                 GridPane.setColumnIndex(text, col);
                 text.setVisible(true);
 
-//                Circle circle = null;
 //
-//                circle = new Circle();
-//                if (row == 0 && col == 0)
-//                    circle.setFill(Color.valueOf("Red"));
-//                else
-//                    circle.setFill(Color.valueOf("Beige"));
-//
-//                circle.setRadius(8);
-//                GridPane.setRowIndex(circle, row);
-//                GridPane.setColumnIndex(circle, col);
 
 
                 if (text.getText().equals(" ")) {
                     listOfStuff[row][col] = 1;
                 } else listOfStuff[row][col] = 2;
-                text.setVisible(false);
+//                text.setVisible(false);
 //                gp.getChildren().addAll(rec, text, circle);
                 gp.getChildren().addAll(rec, text);
             }
@@ -145,14 +143,13 @@ public class Main extends Application {
 //        gp.setGridLinesVisible(true);
 
 //        circle.setUserData("Player");
-        Circle circle =new Circle();
         circle.setFill(Color.valueOf("Red"));
         circle.setRadius(8);
         circle.setUserData("Player");
-        GridPane.setRowIndex(circle,agentPercept.getCurrX());
-        GridPane.setColumnIndex(circle,agentPercept.getCurrY());
+        GridPane.setRowIndex(circle,agentPercept.getCurrY());
+        GridPane.setColumnIndex(circle,agentPercept.getCurrX());
         gp.getChildren().add(circle);
-
+        GridPane.setMargin(circle, new Insets(12,0,0,17));
         vbox.getChildren().add(gp);
         root.setLeft(vbox);
         primaryStage.setTitle("Wumpus World!");
@@ -161,24 +158,45 @@ public class Main extends Application {
         primaryStage.setMinWidth(700);
         primaryStage.show();
 
+        changePlayerPosition(0, 1);
+        new Thread(()->{ //use another thread so long process does not block gui
 
-        movePlayer(gp, circle);
+            try {Thread.sleep(1000);} catch (InterruptedException ex) { ex.printStackTrace();}
+            changePlayerPosition(0, 2);
+        }).start();
+
 
     }
 
-    public void movePlayer(GridPane gp, Circle circle){
-        Node player = getByUserData(gp, "Player");
-        TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
-        tt.setByY(80);
+    private void changePlayerPosition( int x, int y) {
 
-        tt.play();
+        System.out.println("POS");
+        agentPercept.setCurrX(x);
+        agentPercept.setCurrY(y);
 
-        agentPercept.setCurrX(1);
-        agentPercept.setCurrY(0);
 
-        GridPane.setRowIndex(circle,agentPercept.getCurrX());
-        GridPane.setColumnIndex(circle,agentPercept.getCurrY());
+        GridPane.setRowIndex(circle, agentPercept.getCurrY());
+        GridPane.setColumnIndex(circle, agentPercept.getCurrX());
+        System.out.println(worldEnv[x][y]);
     }
+
+//    public void movePlayer(int x, int y){
+//        Node player = getByUserData(gp, "Player");
+//        TranslateTransition tt = new TranslateTransition(Duration.millis(500), circle);
+//        tt.setFromX(agentPercept.getCurrX());
+//        tt.setFromY(agentPercept.getCurrY());
+//        tt.setByX(0);
+//        tt.setByY(50);
+//
+//        tt.play();
+//        tt.setOnFinished(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                changePlayerPosition(x, y);
+//            }
+//        });
+//
+//    }
 
     public static void main(String[] args) {
         launch(args);

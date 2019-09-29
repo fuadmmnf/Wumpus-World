@@ -8,6 +8,12 @@ public class AgentPercept {
 
     }
 
+    public void addKnowledgeFromPercept(String perceptSpace){
+        System.out.println(perceptSpace);
+    }
+
+
+
     public int getCurrX() {
         return currX;
     }

@@ -158,15 +158,21 @@ public class Main extends Application {
         primaryStage.setMinWidth(700);
         primaryStage.show();
 
+
+        startSimulation();
+    }
+
+
+
+    private void startSimulation(){
         changePlayerPosition(0, 1);
         new Thread(()->{ //use another thread so long process does not block gui
 
             try {Thread.sleep(1000);} catch (InterruptedException ex) { ex.printStackTrace();}
             changePlayerPosition(0, 2);
         }).start();
-
-
     }
+
 
     private void changePlayerPosition( int x, int y) {
 
@@ -177,7 +183,8 @@ public class Main extends Application {
 
         GridPane.setRowIndex(circle, agentPercept.getCurrY());
         GridPane.setColumnIndex(circle, agentPercept.getCurrX());
-        System.out.println(worldEnv[x][y]);
+        agentPercept.addKnowledgeFromPercept(worldEnv[x][y]);
+
     }
 
 //    public void movePlayer(int x, int y){
